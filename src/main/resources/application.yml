@@ -1,0 +1,94 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    n: my-labs-redis-cache
+  
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: 2000ms
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+# Configuração das APIs simuladas
+weather:
+  api:
+    primary:
+      fail-rate: ${PRIMARY_FAIL_RATE:0.3}  # 30% de falhas por padrão
+      delay-ms: ${PRIMARY_DELAY_MS:100}
+    secondary:
+      fail-rate: ${SECONDARY_FAIL_RATE:0.2}  # 20% de falhas por padrão
+      delay-ms: ${SECONDARY_DELAY_MS:150}
+
+# Resilience4j - Circuit Breaker
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10                    # Janela de 10 chamadas
+        permittedNumberOfCallsInHalfOpenState: 3 # 3 chamadas em half-open
+        waitDurationInOpenState: 10s             # Aguarda 10s antes de tentar half-open
+        failureRateThreshold: 50                 # Abre circuit se 50% de falhas
+        slowCallRateThreshold: 100               # Considera slow call acima de threshold
+        slowCallDurationThreshold: 2s            # Chamadas > 2s são consideradas lentas
+        recordExceptions:
+          - java.lang.Exception
+    instances:
+      primaryWeatherApi:
+        baseConfig: default
+        registerHealthIndicator: true
+      secondaryWeatherApi:
+        baseConfig: default
+        registerHealthIndicator: true
+
+  # Retry
+  retry:
+    configs:
+      default:
+        maxAttempts: 2                           # Máximo 2 tentativas
+        waitDuration: 500ms                      # Aguarda 500ms entre tentativas
+        retryExceptions:
+          - java.lang.Exception
+    instances:
+      primaryWeatherApi:
+        baseConfig: default
+      secondaryWeatherApi:
+        baseConfig: default
+
+  # Time Limiter
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 3s                      # Timeout de 3 segundos
+        cancelRunningFuture: true
+    instances:
+      primaryWeatherApi:
+        baseConfig: default
+      secondaryWeatherApi:
+        baseConfig: default
+
+# Actuator - Endpoints de monitoramento
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,circuitbreakers,circuitbreakerevents
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+
+# Logging
+logging:
+  level:
+    com.mylabs.resilientcache: INFO
+    io.github.resilience4j: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
