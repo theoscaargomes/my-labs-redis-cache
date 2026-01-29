@@ -57,12 +57,12 @@ public class WeatherService {
      */
     private WeatherResponse fetchWithFallback(String city) {
         try {
-            return callPrimaryApi(city);
+            return callPrimaryApi(city).join();
         } catch (Exception e1) {
             log.warn("[FALLBACK] Primary API failed, trying secondary API...");
             
             try {
-                return callSecondaryApi(city);
+                return callSecondaryApi(city).join();
             } catch (Exception e2) {
                 log.warn("[FALLBACK] Secondary API failed, trying stale cache...");
                 

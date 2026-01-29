@@ -15,7 +15,7 @@
     <groupId>com.mylabs</groupId>
     <artifactId>resilient-cache</artifactId>
     <version>1.0.0</version>
-    <n>my-labs-redis-cache</name>
+    <name>my-labs-redis-cache</name>
     <description>Redis as Resilience Layer with Circuit Breaker and Fallback</description>
 
     <properties>
