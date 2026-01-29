@@ -2,7 +2,7 @@
 
 > Part 1 of "Building Resilient Java Applications" series
 
-[![dev.to](https://img.shields.io/badge/Read%20Article-dev.to-0A0A0A?style=flat-square&logo=dev.to)](https://dev.to/theoscaargomes)
+[![dev.to](https://img.shields.io/badge/Read%20Article-dev.to-0A0A0A?style=flat-square&logo=dev.to)](https://dev.to/theoscaargomes/fallback-e-degradacao-graciosa-com-redis-e-circuit-breaker-dn0)
 
 ## 📖 Sobre
 
