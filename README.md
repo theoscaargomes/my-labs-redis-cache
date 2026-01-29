@@ -22,7 +22,7 @@ Este projeto demonstra como implementar **degradação graciosa** e **fallback c
 
 ## 📚 Artigo Relacionado
 
-Leia o artigo completo no dev.to: [Fallback e Degradação Graciosa com Redis e Circuit Breaker](#) *(link será adicionado após publicação)*
+Leia o artigo completo no dev.to: [Fallback e Degradação Graciosa com Redis e Circuit Breaker](https://dev.to/theoscaargomes/fallback-e-degradacao-graciosa-com-redis-e-circuit-breaker-dn0)
 
 ## 🚀 Quick Start
 
